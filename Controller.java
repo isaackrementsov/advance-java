@@ -3,26 +3,36 @@ import java.io.*;
 import java.util.HashMap;
 import com.sun.net.httpserver.*;
 public abstract class Controller implements HttpHandler {
-    private HashMap<String, Object> data = new HashMap<>();
-    private OutputStream res;
-    private String[] params;
+    HashMap<String, Object> data = new HashMap<>();
+    OutputStream res;
+    HashMap<String, String> params = new HashMap<>();
+    //HashMap<String, String> query = new HashMap<>(); 
+    Param[] rules;
     public Controller(){
         this.data = null;
     }
     public Controller(HashMap<String, Object> data){
+        this.parseQuery = parseQuery;
         this.data = data;
+    }
+    private HashMap<String, String> parseParams(String url){
+        HashMap<String, String> params = new HashMap<>();
+        for(Param p : this.paramRules){
+            int end;
+            int slashIndex = url.substring(p.start).indexOf("/");
+            if(slashIndex == -1){
+                end = url.length(); 
+            }else{
+                end = slashIndex + p.start;
+            }
+            params.put(p.name, url.substring(p.start, end));
+        }
+        return params;
     }
     public void handle(HttpExchange he){
         res = he.getResponseBody();
         String method = he.getRequestMethod();
-        String path = he.getRequestURI().replace(url, "")
-        String[] reqParams = path.split("/")
-        int i = 0;
-        while(i < reqParams.length){
-            reqParams[i] = reqParams[i].replace("/", "")
-            i++
-        }
-        params = reqParams;
+        this.params = parseParams(he.getRequestURI().path);
         try {
             switch(method){
                 case "GET":
