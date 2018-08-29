@@ -3,6 +3,7 @@ import java.net.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Arrays;
+package advance;
 public class Server {
     public int port;
     private HttpServer server = null;
@@ -16,7 +17,7 @@ public class Server {
     }
     public void addController(String url, Controller controller){
         server.createContext(url, controller);
-        server.rules = setParams(url);
+        controller.rules = setParams(url);
     }
     private Param[] setParams(String format){
         Param[] params = new Param[format.split(":").length - 1];
@@ -38,12 +39,12 @@ public class Server {
             }
             i++;
         }
-        return params
+        return params;
     }
-    class Param {
-        String name;
+    public static class Param {
         int start;
-        public Param(String name, int start){
+        String name;
+        public Param(int start, String name){
             this.name = name;
             this.start = start;
         }
