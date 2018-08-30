@@ -3,7 +3,6 @@ import java.net.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Arrays;
-package advance;
 public class Server {
     public int port;
     private HttpServer server = null;
