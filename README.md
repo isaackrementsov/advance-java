@@ -41,10 +41,9 @@ Right now, your server will do nothing. To route URLs to actions, create a contr
 ```java
 package project_name.controllers;
 import advance.Controller;
-import com.sun.net.httpserver.HttpExchange;
 public class MainController extends Controller {
     //Create a receiver for the GET method
-    public void get(HttpExchange he){
+    public void get(){
         //Set a byte[] response to be sent
         super.response = "Hello world!".getBytes();
     }
@@ -85,21 +84,20 @@ public class App {
 ```java
 package project_name.controllers;
 import advance.Controller;
-import com.sun.net.httpserver.HttpExchange;
 public class MethodsController extends Controller {
-    public void get(HttpExchange he){
+    public void get(){
         super.response = "GET request to /showMethod".getBytes();
     }
-    public void post(HttpExchange he){
+    public void post(){
         super.response = "POST request to /showMethod".getBytes();
     }
-    public void patch(HttpExchange he){
+    public void patch(){
         super.response = "PATCH request to /showMethod".getBytes();
     }
-    public void put(HttpExchange he){
+    public void put(){
         super.response = "PUT request to /showMethod".getBytes();
     }
-    public void delete(HttpExchange he){
+    public void delete(){
         super.response = "DELETE request to /showMethod".getBytes();
     }
 }
@@ -124,9 +122,8 @@ public class App {
 ```java
 package project_name.controllers;
 import advance.Controller;
-import com.sun.net.httpserver.HttpExchange;
 public class ParamController extends Controller {
-    public void get(HttpExchange he){
+    public void get(){
         //If request url is /search/laptops?price=500
         String resp = "Search: " + params["category"] + ", $" + query["price"];
         super.response = resp.getBytes(); //Browser will show "Search: Laptop, $500";
@@ -141,18 +138,26 @@ package project_name.controllers;
 import advance.Controller;
 import project_name.db.*;
 public class SessionController extends Controller {
-    public void get(HttpExchange he){
-        session["username"] = "johnsmith";
-        session["password"] = "password123";
+    public void get(){
+        session.put("username", "johnsmith")
+        session.put("password", "password123");
         super.response = "Session set".getBytes();
     }
-    public void post(HttpExchange he){
-        User newUser = new User(session["SID"], session["username"], session["password"]);
+    public void post(){
+        User newUser = new User(session.get("SID"), session.get("username"), session.get("password"));
         newUser.save();
         super.responseCode = 302;
         super.headerEdits.put("Location", "/user/home");
     }
 }
+```
+##HTTP Forms
+###GET forms
+HTTP GET forms are simply url queries, so they are already available in the `query` object.
+###POST, PUT, PATCH and DELETE forms
+Other form methods can be accessed within controller methods as follows:
+```java
+String data = super.body["input-name"];
 ```
 ## Other HTTP Nuts & Bolts
 ### Setting an HTTP response
@@ -176,5 +181,11 @@ Redirection is a two step proccess in which the response code and headers are ch
 super.responseCode = 302;
 super.headerEdits.put("Location", "url");
 ```
+### Get the basic HttpExchange
+The HttpExchange object passed in by com.sun.net.httpserver is still available if you write
+```java
+super.rawExchange;
+```
+in a controller method.
 ## Running a project
 Advance projects can be run like any other Java program. Access the server using `http://localhost:port-you-set` in the browser.
