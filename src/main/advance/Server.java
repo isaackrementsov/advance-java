@@ -19,6 +19,9 @@ public class Server {
         this.server.createContext(url, controller);
         controller.rules = setParams(url);
     }
+    public void addStaticController(String url, String root){
+        this.server.createContext(url, new StaticController(root));
+    }
     private Param[] setParams(String format){
         Param[] params = new Param[format.split(":").length - 1];
         boolean paramStart = false;

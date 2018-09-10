@@ -58,7 +58,7 @@ public class App {
     public static void main(String[] args){
         Server app = new Server(3000);
         //Route any "/" request to MainController
-        app.addController("/", MainController());
+        app.addController("/", new MainController());
         app.listen();    
     }
 }
@@ -75,7 +75,7 @@ import project_name.controllers;
 public class App {
     public static void main(String[] args){
         Server app = new Server(3000);
-        app.addController("/showMethod", MethodsController());
+        app.addController("/showMethod", new MethodsController());
         app.listen();    
     }
 }
@@ -112,7 +112,7 @@ import project_name.controllers;
 public class App {
     public static void main(String[] args){
         Server app = new Server(3000);
-        app.addController("/search/:category", ParamController());
+        app.addController("/search/:category", new ParamController());
         app.listen();    
     }
 }
@@ -125,7 +125,7 @@ import advance.Controller;
 public class ParamController extends Controller {
     public void get(){
         //If request url is /search/laptops?price=500
-        String resp = "Search: " + params["category"] + ", $" + query["price"];
+        String resp = "Search: " + params.get("category") + ", $" + query.get("price");
         super.response = resp.getBytes(); //Browser will show "Search: Laptop, $500";
     }
 }
@@ -151,13 +151,13 @@ public class SessionController extends Controller {
     }
 }
 ```
-##HTTP Forms
-###GET forms
+## HTTP Forms
+### GET forms
 HTTP GET forms are simply url queries, so they are already available in the `query` object.
-###POST, PUT, PATCH and DELETE forms
+### POST, PUT, PATCH and DELETE forms
 Other form methods can be accessed within controller methods as follows:
 ```java
-String data = super.body["input-name"];
+String data = super.body.get("input-name");
 ```
 ## Other HTTP Nuts & Bolts
 ### Setting an HTTP response

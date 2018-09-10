@@ -17,6 +17,9 @@ public abstract class Controller implements HttpHandler {
     public int responseCode = 200;
     public byte[] response = {};
     public HttpExchange rawExchange;
+    public boolean overrideWrite = false;
+    public boolean overrideHeaders = false;
+    public boolean overrideClose = false;
     public HashMap<String, String> body;
     public HashMap<String, Object> data;
     public HashMap<String, String> params;
@@ -165,16 +168,20 @@ public abstract class Controller implements HttpHandler {
                     break;
             }
             saveSession();
-            System.out.println(this.body);
-            System.out.println(this.headerEdits);
-            Headers resHeaders = he.getResponseHeaders();
-            for(String key : this.headerEdits.keySet()){
-                resHeaders.set(key, this.headerEdits.get(key));
+            if(!this.overrideHeaders){
+                Headers resHeaders = he.getResponseHeaders();
+                for(String key : this.headerEdits.keySet()){
+                    resHeaders.set(key, this.headerEdits.get(key));
+                }
+                he.sendResponseHeaders(this.responseCode, this.response.length);
+            }            
+            if(!this.overrideWrite){
+                this.res.write(this.response);
             }
-            he.sendResponseHeaders(this.responseCode, this.response.length);
-            this.res.write(this.response);
-            this.res.flush();
-            this.res.close();
+            if(!this.overrideClose){
+                this.res.flush();
+                this.res.close();
+            }
         }catch(Exception e){
             System.out.println("Controller exception: " + e);
         }
