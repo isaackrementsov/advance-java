@@ -50,7 +50,7 @@ public class MainController extends Controller {
     }
 }
 ```
-Now, edit your `app.java` file to look like this:
+Now, edit your `App.java` file to look like this:
 ```java
 package project_name;
 import advance.Server;
@@ -68,7 +68,7 @@ You now have an app that will send `hello world` to the browser at `localhost:30
 ## Routing
 ### REST Methods
 Advance supports all of the HTTP methods (GET, POST, PUT, PATCH, DELETE). You can handle one of them by creating a controller method with a corresponding lowercase name. If not handler is found, the server will respond witha 405 status code. Here is how an app would handle a couple of methods:
-`app.java`
+`App.java`
 ```java
 package project_name;
 import advance.Server;
@@ -88,25 +88,25 @@ import advance.Controller;
 import com.sun.net.httpserver.HttpExchange;
 public class MethodsController extends Controller {
     public void get(HttpExchange he){
-        super.response = "GET request to /".getBytes();
+        super.response = "GET request to /showMethod".getBytes();
     }
     public void post(HttpExchange he){
-        super.response = "POST request to /".getBytes();
+        super.response = "POST request to /showMethod".getBytes();
     }
     public void patch(HttpExchange he){
-        super.response = "PATCH request to /".getBytes();
+        super.response = "PATCH request to /showMethod".getBytes();
     }
     public void put(HttpExchange he){
-        super.response = "PUT request to /".getBytes();
+        super.response = "PUT request to /showMethod".getBytes();
     }
     public void delete(HttpExchange he){
-        super.response = "DELETE request to /".getBytes();
+        super.response = "DELETE request to /showMethod".getBytes();
     }
 }
 ```
 ### Parameters and queries
 Advance `Controller`s will automatically parse URL parameters (if specified) and any query strings that are detected. You can set url parameters by passing a url like `/your/url/:param` into the `Server` `addController` method. Queries and parameters are found in the `super.query` and `super.params` hashmaps, both of which are accessible to controller methods. Below is an example.
-`app.java`
+`App.java`
 ```java
 package project_name;
 import advance.Server;
@@ -163,7 +163,7 @@ super.response = "Your response here".getBytes();
 ### Changing the response code
 The response code is set to 200 by default, but, to change it, you can do the following in a controller method:
 ```java
-super.responseCode = 200;
+super.responseCode = 404;
 ```
 ### Changing response headers
 Changing response headers is simple; in a controller add this code:
