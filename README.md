@@ -132,7 +132,7 @@ import advance.Controller;
 public class ParamController extends Controller {
     public void get(){
         //If request url is /search/laptops?price=500
-        String resp = "Search: " + params.get("category") + ", $" + query.get("price");
+        String resp = "Search: " + super.params.get("category") + ", $" + super.query.get("price");
         super.response = resp.getBytes(); //Browser will show "Search: Laptop, $500";
     }
 }
@@ -153,7 +153,7 @@ public class SessionController extends Controller {
     public void post(){
         User newUser = new User(super.session.get("SID"), super.session.get("username"), super.session.get("password"));
         newUser.save();
-        redirect("/user/home", 302);
+        super.redirect("/user/home", 302);
     }
 }
 ```
@@ -189,7 +189,7 @@ super.render("filename", data)
 ```
 ## HTTP Forms
 ### GET forms
-HTTP GET forms are simply url queries, so they are already available in the `query` object.
+HTTP GET forms are simply url queries, so they are already available in the `super.query` object.
 ### POST, PUT, PATCH and DELETE forms
 Other form methods can be accessed within controller methods as follows:
 ```java
@@ -227,6 +227,9 @@ super.overrideHeaders = true;
 super.overrideWrite = true;
 //Prevent the Controller from closing the OutputStream that it uses to write responses
 super.overrideClose = true;
+/*
+replacement functions
+*/
 ```
 ### Redirects
 Redirection is done by a function that takes the response code and url for redirection. 
