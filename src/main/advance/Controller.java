@@ -27,7 +27,7 @@ public abstract class Controller implements HttpHandler {
     public HashMap<String, Object> session;
     public HashMap<String, String> headerEdits;
     public Server.Param[] rules;
-    private OutputStream res;
+    public OutputStream res;
     private ArrayList<HashMap<String, Object>> sessionStore = new ArrayList<>();
     private int sessIndex = -1;
     public Controller(){

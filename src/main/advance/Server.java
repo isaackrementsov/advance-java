@@ -12,7 +12,7 @@ public class Server {
         try {
             this.server = HttpServer.create(new InetSocketAddress(port), 0);
         }catch(IOException e){
-            System.out.println("Error creating server: " + e);
+            System.out.println("Error creating server:  " + e);
         }
     }
     public void addController(String url, Controller controller){
@@ -20,7 +20,9 @@ public class Server {
         controller.rules = setParams(url);
     }
     public void addStaticController(String url, String root){
-        this.server.createContext(url, new StaticController(root));
+        StaticController staticController = new StaticController();
+        this.addController(url, staticController);
+        staticController.root = root;
     }
     private Param[] setParams(String format){
         Param[] params = new Param[format.split(":").length - 1];

@@ -65,6 +65,11 @@ public class App {
 ```
 You now have an app that will send `hello world` to the browser at `localhost:3000` ! Continue reading for further information.
 ## Routing
+### Static file routing
+If you want to automatically return static files within a public directory, use the `Server` `addStaticController` method in your app's main method. If a nonexistent file is requested, the method will return a 404 error.
+```java
+app.addStaticController("/url/", "/path/to/public/directory");
+```
 ### REST Methods
 Advance supports all of the HTTP methods (GET, POST, PUT, PATCH, DELETE). You can handle one of them by creating a controller method with a corresponding lowercase name. If not handler is found, the server will respond witha 405 status code. Here is how an app would handle a couple of methods:
 `App.java`
