@@ -157,7 +157,34 @@ public class SessionController extends Controller {
     }
 }
 ```
-## Rendering templates
+### Plug in a custom session engine
+`app.java`
+```java
+package project_name;
+import advance.Server;
+import project_name.controllers;
+public class App {
+    public static void main(String[] args){
+        Server app = new Server(3000, "/root");
+        Server.sessionStore = new MySessionStore();
+        //Sessions can still be used normally
+        app.addController("/search/:category", new ParamController());
+        app.listen();    
+    }
+}
+```
+`MySessionStore.java`
+```java
+package project_name;
+import advance.SessionStore;
+import java.util.HashMap;
+public class MySessionStore implements SessionStore {
+    public HashMap<String, Object> get(String key){/*method implementation*/}
+    public void set(String key, HashMap<String, Object> value){/*method implementation*/}
+}
+```
+Any session store that you plugin must have the above methods to implement the `SessionStore` interface and be properly used as a storage engine.
+## Rendering Templates
 Advance comes with the templating engine [Apache Freemarker](https://freemarker.apache.org/docs/pgui_quickstart_all.html), which is a simple but full-featured engine that can embed server-side code into HTML. If you install Advance using source code, you will also need to install freemarker so that it is usable as a dependency to Advance.
 ### Setup
 You will need to register some basic information to make rendering simpler from your controllers.
