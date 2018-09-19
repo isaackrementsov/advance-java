@@ -182,6 +182,7 @@ public abstract class Controller implements HttpHandler {
             }
         }catch(Exception e){
             System.out.println("Controller exception: " + e);
+            e.printStackTrace();
         }
         this.overrideHeaders = false;
         this.overrideSendHeaders = false;
