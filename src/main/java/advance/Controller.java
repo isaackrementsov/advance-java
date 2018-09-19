@@ -60,7 +60,7 @@ public abstract class Controller implements HttpHandler {
             }else{
                 end = slashIndex + p.start;
             }
-            paramsToParse.put(p.name, url.substring(p.start, end));
+            paramsToParse.put(p.name.split(":")[1], url.substring(p.start, end));
         }
         this.params = paramsToParse;
     }
