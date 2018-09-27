@@ -16,7 +16,7 @@ src->
             project_name
 ```
 ##### Install from Jar file
-Installing from a jar file depends on your build manager, so see their documentation. However, you will generally put the jar file into a `libs` folder and then compile it to your classpath (where binary files are stored).
+Installing from a jar file depends on your build manager, so see their documentation. However, you will generally [download the jar file](https://github.com/isaackrementsov/advance-java/blob/master/build/libs/advance-java.jar) and put it into a `libs` folder and then compile it to your classpath (where binary files are stored).
 ##### Install from source code
 Simply download the Github code and copy the `advance` folder into your `java` folder. Also, make sure that freemarker is installed as an accessible package.
 To use the framework, import it like so:
