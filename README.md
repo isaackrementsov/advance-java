@@ -5,6 +5,8 @@ Read the following to set up Advance-Java on your machine
 ### Prerequisites
 * [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Freemarker](https://freemarker.apache.org/docs/pgui_quickstart_all.html) (if using source code)
+* Java Servlet API
+* Apache Commons File Upload
 ### Installation
 Your Java project should look like this:
 ```java
