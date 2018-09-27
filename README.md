@@ -6,7 +6,6 @@ Read the following to set up Advance-Java on your machine
 * [Java Development Kit](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Freemarker](https://freemarker.apache.org/docs/pgui_quickstart_all.html) (if using source code)
 ### Installation
-##### Install Advance-Java from source code
 Your Java project should look like this:
 ```java
 src->
@@ -14,6 +13,9 @@ src->
         java->
             project_name
 ```
+##### Install from Jar file
+Installing from a jar file depends on your build manager, so see their documentation. However, you will generally put the jar file into a `libs` folder and then compile it to your classpath (where binary files are stored).
+##### Install from source code
 Simply download the Github code and copy the `advance` folder into your `java` folder. Also, make sure that freemarker is installed as an accessible package.
 To use the framework, import it like so:
 ```java
