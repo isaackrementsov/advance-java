@@ -12,8 +12,16 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
-import com.sun.net.httpserver.*;
+import java.util.Map.Entry;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.Headers;
 import freemarker.template.*;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.RequestContext;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public abstract class Controller implements HttpHandler {
     public Server.Param[] rules;
     public OutputStream res;
@@ -144,6 +152,10 @@ public abstract class Controller implements HttpHandler {
         this.parseParams(url);
         this.parseQuery(url); 
         this.getRequestBody(he);
+        String methodInput = this.body.get("_method");
+        if(methodInput != null){
+            method = methodInput;
+        }
         if(setSession){
             this.getSession(he);
         }
@@ -197,7 +209,7 @@ public abstract class Controller implements HttpHandler {
         this.headerEdits = null;
         this.sessIndex = -1;
     }
-    public void render(String filename, Object tData){
+    protected void render(String filename, Object tData){
         if(config != null){
             try{
                 this.overrideSendHeaders = true;
@@ -216,9 +228,33 @@ public abstract class Controller implements HttpHandler {
             }
         }
     }
-    public void redirect(String url, int code){
+    protected void redirect(String url, int code){
         this.responseCode = code;
         this.headerEdits.put("Location", url);
+    }
+    protected void uploadFile(){
+        HttpExchange he = this.rawExchange;
+        DiskFileItemFactory d = new DiskFileItemFactory();
+        try {
+            ServletFileUpload up = new ServletFileUpload(d);
+            List<FileItem> result = up.parseRequest(new RequestContext(){
+                public String getCharacterEncoding(){
+                    return "UTF-8";
+                }
+                public int getContentLength(){
+                    return 0;
+                }
+                public String getContentType(){
+                    return he.getRequestHeaders().getFirst("Content-Type");
+                }
+                public InputStream getInputStream() throws IOException {
+                    return he.getRequestBody();
+                }
+            });
+        }catch(Exception ioe){
+            System.out.println("Error uploading file: " + ioe);
+            ioe.printStackTrace();
+        }
     }
     public void get() throws Exception {
         this.responseCode = 405;

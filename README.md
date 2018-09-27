@@ -222,6 +222,12 @@ Other form methods can be accessed within controller methods as follows:
 ```java
 String data = super.body.get("input-name");
 ```
+#### PUT, PATH, and DELETE forms
+Because HTML forms do not support HTTP verbs other than GET and POST, you will need to add the following hidden input to your form:
+```html
+<input type="hidden" name="_method" method="MYMETHOD">
+```
+This will direct HTTP traffic to the specified method and its corresponding controller function.
 ## Other HTTP Nuts & Bolts
 ### Setting an HTTP response
 This was glanced over previously, but this is the code to add in a controller:
