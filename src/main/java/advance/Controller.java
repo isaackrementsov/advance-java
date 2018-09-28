@@ -256,6 +256,9 @@ public abstract class Controller implements HttpHandler {
             ioe.printStackTrace();
         }
     }
+    protected void deleteSession(){
+        this.session.keySet().removeIf(key -> !key.equals("SID"));
+    }
     public void get() throws Exception {
         this.responseCode = 405;
         this.response = "Method not allowed".getBytes();
