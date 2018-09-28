@@ -15,10 +15,11 @@ src->
         java->
             project_name
 ```
-##### Install from Jar file
-Installing from a jar file depends on your build manager, so see their documentation. However, you will generally [download the jar file](https://github.com/isaackrementsov/advance-java/blob/master/build/libs/advance-java.jar) and put it into a `libs` folder and then compile it to your classpath (where binary files are stored).
-##### Install from source code
-Simply download the Github code and copy the `advance` folder into your `java` folder. Also, make sure that freemarker is installed as an accessible package.
+#### Install from JAR file (recommended)
+Installing from a JAR file depends on your build manager, so see their documentation. However, you will generally [download the JAR file](https://github.com/isaackrementsov/advance-java/blob/master/build/libs/advance-java.JAR) and put it into a `libs` folder and then compile it to your classpath (where binary files are stored). Installation from a JAR file does not require external dependencies and makes it easy to update the framework.
+#### Install from source code
+Simply download the Github code and copy the `advance` folder into your `java` folder. Also, make sure that the specified dependencies are installed.
+#### Import package
 To use the framework, import it like so:
 ```java
 import advance.*;
@@ -161,6 +162,8 @@ public class SessionController extends Controller {
     }
 }
 ```
+### Delete session data
+Deleting session data is important to change the state of the current user or log the user out. Specific keys can be deleted as in any HashMap (`super.session.put("mykey", null)`); however DO NOT delete the `SID` session field, as it will result in a `NullPointerException`. Deleting all session data aside from an SID is done by calling `super.deleteSession()` within a controller method.
 ### Plug in a custom session engine
 `app.java`
 ```java
