@@ -160,7 +160,7 @@ public abstract class Controller implements HttpHandler {
             this.getSession(he);
         }
         try {
-            switch(method){
+            switch(method){ //REST routing (CRUD Operations)
                 case "GET":
                     this.get();
                     break;
@@ -198,7 +198,7 @@ public abstract class Controller implements HttpHandler {
                 this.res.close();
             }
         }catch(Exception e){
-            System.out.println("Controller exception: " + e);
+            System.out.println("There was a controller exception: " + e);
             e.printStackTrace();
         }
         this.overrideHeaders = false;
@@ -235,6 +235,7 @@ public abstract class Controller implements HttpHandler {
     protected void uploadFile(){
         HttpExchange he = this.rawExchange;
         DiskFileItemFactory d = new DiskFileItemFactory();
+        //Error handling using try, catch loops
         try {
             ServletFileUpload up = new ServletFileUpload(d);
             List<FileItem> result = up.parseRequest(new RequestContext(){
