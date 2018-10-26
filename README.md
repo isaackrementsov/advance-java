@@ -191,6 +191,30 @@ public class MySessionStore implements SessionStore {
 }
 ```
 Any session store that you plugin must have the above methods to implement the `SessionStore` interface and be properly used as a storage engine.
+## File uploads
+Uploading files in Advance is fairly simple (credit for algorithm goes to [apimeister.com](https://apimeister.com/2015/10/10/formdatahandler-implements-com-sun-net-httpserver-httphandler.html)). On the client side, you should have a form that looks like this:
+```html
+<form method="post" action="/form/url" enctype="multipart/form-data">
+    <input type="hidden" name="file" value="upl">
+    <input type="file" name="myfileinput">
+    <input type="submit" value="Submit">
+</form>
+```
+On the server side, any form with `enctype="multipart/form-data"` will automatically be parsed into usable data using the `Controller.MultiPart` class.
+```java
+public static class MultiPart {
+        public PartType type;
+        public String contentType;
+        public String name;
+        public String filename;
+        public String value;
+        public byte[] bytes;
+        public void save() throws IOException {
+            FileUtils.writeByteArrayToFile(new File(filename), bytes);
+        }
+    }
+```
+The files are stored as a `MultiPart[]` in the `super.files` variable, where they can be accessed and manipulated in controller methods.
 ## Rendering Templates
 Advance comes with the templating engine [Apache Freemarker](https://freemarker.apache.org/docs/pgui_quickstart_all.html), which is a simple but full-featured engine that can embed server-side code into HTML. If you install Advance using source code, you will also need to install freemarker so that it is usable as a dependency to Advance.
 ### Setup
@@ -216,9 +240,9 @@ The `Controller` `render` method takes a filename pointing to a template and an 
 ```java
 HashMap<String, Object> data = new HashMap<>();
 data.put("info", "stuff");
-data.put("otherinfo", "more stuff")
+data.put("otherinfo", "more stuff");
 //Full template name should be "filename.ftlh"
-super.render("filename", data)
+super.render("filename", data);
 //Access values in the template like <h1>${info}<h1> --> <h1>stuff</h1>. See Freemarker docs for more information.
 ```
 ## HTTP Forms
@@ -230,11 +254,11 @@ Other form methods can be accessed within controller methods as follows:
 String data = super.body.get("input-name");
 ```
 #### PUT, PATH, and DELETE forms
-Because HTML forms do not support HTTP verbs other than GET and POST, you will need to add the following hidden input to your form:
+Because HTML forms do not support HTTP verbs other than GET and POST, you will need to add the following hidden input to a POST form:
 ```html
 <input type="hidden" name="_method" method="MYMETHOD">
 ```
-This will direct HTTP traffic to the specified method and its corresponding controller function.
+This will direct HTTP traffic to the specified method and its corresponding controller function. You can also add a url query like so: `/form/url?_method=MYMETHOD`.
 ## Other HTTP Nuts & Bolts
 ### Setting an HTTP response
 This was glanced over previously, but this is the code to add in a controller:
